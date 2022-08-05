@@ -4,7 +4,8 @@ import {
   CardImage,
   CardBorder,
   CardName,
-} from "./sytledComponent";
+  Gray,
+} from "./styledComponent";
 
 const ResourceCardComponent = () => {
   const resource = {
@@ -25,11 +26,13 @@ const ResourceCardComponent = () => {
         </CardBorder>
         <div>
           <CardName>{title}</CardName>
-          <p>{tag}</p>
+          <Gray>{category}</Gray>
         </div>
       </Border>
-      <a href={link}> {link}</a>
-      <p>{description}</p>
+      <a href={link} style={{ color: "#0B69FF", fontWeight: "bold" }}>
+        {link}
+      </a>
+      <Gray>{description}</Gray>
     </CardDiv>
   );
 };

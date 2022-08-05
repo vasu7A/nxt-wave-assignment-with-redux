@@ -8,7 +8,6 @@ const Header = () => {
           src="https://media-content.ccbp.in/website/ccbp_website_logos/nxtwave_header_logo.png"
           alt="app logo"
         />
-
         <Username />
       </DivElmt>
     </NavElmt>

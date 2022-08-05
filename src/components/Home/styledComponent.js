@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Main = styled.div`
   background-color: #f5f5f5;
   min-height: 100vh;
-  font-family: HK Grotesk;
   padding-left: 100px;
   padding-right: 100px;
 `;
@@ -48,21 +47,19 @@ export const Border = styled.div`
 export const BorderSearch = styled.div`
   border-color: #d7dfe9;
   border-style: solid;
-  position: absolute;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: white;
-  margin-bottom: 100px;
 `;
 
 export const Input = styled.input`
   border-style: none;
   outline: none;
-  height: 40px;
-  width: 648px;
+  min-height: 40px;
+  min-width: 648px;
   font-size: 14px;
   padding-left: 7px;
 `;
