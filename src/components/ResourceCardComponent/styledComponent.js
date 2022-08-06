@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 export const CardDiv = styled.div`
-  max-height: 192px;
-  max-width: 360px;
-  margin-top: 10px;
+  height: 192px;
+  width: 360px;
   border-color: #d7dfe9;
   border-style: solid;
   border-radius: 5px;
   padding: 10px;
+  margin: 10px;
+  margin-left: 0px;
 `;
 export const Gray = styled.p`
   color: #7e858e;

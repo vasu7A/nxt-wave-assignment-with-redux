@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTable, usePagination } from "react-table";
-
+import { Link } from "react-router-dom";
 import { COLUMNS } from "./Columns";
 
 import {
@@ -10,6 +10,9 @@ import {
   TdTag,
   TableBottomDiv,
   TableCustomButton,
+  TableCustomButtonAdd,
+  TableCustomButtonDelete,
+  NumericButtons,
 } from "./styledComponent";
 
 const ReactTable = (props) => {
@@ -36,9 +39,12 @@ const ReactTable = (props) => {
     page,
     nextPage,
     previousPage,
-
+    pageOptions,
+    state,
     prepareRow,
   } = tableInstance;
+
+  const { pageIndex } = state;
 
   return (
     <>
@@ -73,14 +79,23 @@ const ReactTable = (props) => {
       </TableTag>
       <TableBottomDiv>
         <div>
-          <button>Add</button>
-          <button>Del</button>
+          <Link to="/addResource">
+            <TableCustomButtonAdd>Add</TableCustomButtonAdd>
+          </Link>
+          <TableCustomButtonDelete>Delete</TableCustomButtonDelete>
         </div>
         <div>
           <TableCustomButton onClick={() => previousPage()}>
-            Previous
+            {"<"}
           </TableCustomButton>
-          <TableCustomButton onClick={() => nextPage()}>Next</TableCustomButton>
+          <NumericButtons>{pageIndex + 1}</NumericButtons>
+          <NumericButtons>{pageIndex + 2}</NumericButtons>
+          <NumericButtons>---</NumericButtons>
+          <NumericButtons>{pageOptions.length - pageIndex - 2}</NumericButtons>
+          <NumericButtons>{pageOptions.length - pageIndex - 1}</NumericButtons>
+          <TableCustomButton onClick={() => nextPage()}>
+            {">"}
+          </TableCustomButton>
         </div>
       </TableBottomDiv>
     </>

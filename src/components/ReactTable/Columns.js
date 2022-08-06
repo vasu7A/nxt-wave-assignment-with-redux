@@ -5,6 +5,7 @@ export const COLUMNS = [
       <input
         type="checkbox"
         style={{ height: "16px", width: "16px", border: "2px #D7DFE9" }}
+        onSelect={console.log("check111box")}
       />
     ),
   },
@@ -15,6 +16,7 @@ export const COLUMNS = [
   {
     Header: "description",
     accessor: "description",
+    Cell: (e) => <p>{e.value.substring(0, 100) + "..."}</p>,
   },
   {
     Header: "link",

@@ -1,0 +1,20 @@
+.input-sort {
+  display: flex;
+  margin: 40px 0px;
+  justify-content: space-between;
+}
+.input-sort > div:nth-child(1) {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  font-size: 26px;
+}
+.input-sort > div:nth-child(2) {
+  display: flex;
+  flex: 2;
+}
+.input-sort > div:nth-child(2) > input {
+  width: 100%;
+  padding: 10px;
+}

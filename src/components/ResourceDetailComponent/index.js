@@ -1,8 +1,11 @@
-import { Component } from "react";
-import Header from "../Header";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import ReactTable from "../ReactTable";
-import { BsChevronLeft, BsFilterRight } from "react-icons/bs";
+import { BsChevronLeft } from "react-icons/bs";
 import { FaSistrix } from "react-icons/fa";
+import { ThreeDots } from "react-loader-spinner";
+import { Link } from "react-router-dom";
+import SortMenu from "./sortMenu";
 
 import {
   Border,
@@ -20,111 +23,72 @@ import {
   Input,
 } from "./styledComponent";
 
-class ResourceDetailComponent extends Component {
-  state = {
-    resourceDetails: [],
-    isLoading: true,
-    searchInput: "",
-  };
+const ResourceDetailComponent = () => {
+  const resource = useSelector((store) => store.details.resource_details);
+  let resourceItem = useSelector((store) => store.details.resource_item);
 
-  componentDidMount() {
-    this.getSourceData();
-  }
+  const [input, setInput] = useState("");
 
-  getSourceData = async () => {
-    const apiUrl =
-      "https://media-content.ccbp.in/website/react-assignment/resource/1.json";
-    const response = await fetch(apiUrl);
-    if (response.ok) {
-      const fetchedData = await response.json();
-      const updatedData = {
-        id: fetchedData.id,
-        title: fetchedData.title,
-        iconUrl: fetchedData.icon_url,
-        link: fetchedData.link,
-        description: fetchedData.description,
-        resourceItems: fetchedData.resource_items,
-      };
-      this.setState({
-        resourceDetails: updatedData,
-        isLoading: false,
-      });
-    }
-  };
-
-  onBasedUserInput = (event) => {
-    this.setState({
-      searchInput: event.target.value,
-    });
-  };
-
-  render() {
-    const { searchInput, resourceDetails } = this.state;
-    const {
-      iconUrl,
-      title,
-      id,
-      link,
-      description,
-      resourceItems,
-    } = resourceDetails;
-
-    return (
-      <>
-        <Header />
-        <Main>
+  return resource.id === undefined ? (
+    <ThreeDots color="#00BFFF" height={80} width={80} />
+  ) : (
+    <>
+      <Main>
+        <Link to="/">
           <ReturnHome>
             <BsChevronLeft />
             <p>Resources</p>
           </ReturnHome>
-          <div>
-            <Border>
-              <ImgDiv>
-                <CardImage src={iconUrl} alt="icon-url" />
-              </ImgDiv>
+        </Link>
+        <div>
+          <Border>
+            <ImgDiv>
+              <CardImage src={resource.icon_url} alt="icon-url" />
+            </ImgDiv>
 
-              <Spacing>
-                <CardName>{title}</CardName>
-                <Gray>{id}</Gray>
-                <a
-                  href={link}
-                  target="_blank"
-                  style={{ color: "#0B69FF", fontWeight: "bold" }}
-                  rel="noreferrer"
-                >
-                  {link}
-                </a>
-              </Spacing>
-            </Border>
-            <Gray>{description}</Gray>
-          </div>
-          <UpdateBtn>Update</UpdateBtn>
-          <TableTopSection>
-            <h1>Items</h1>
-            <SearchWithSort>
-              <BorderSearch>
-                <FaSistrix
-                  style={{
-                    height: "20px",
-                    width: "20px",
-                    paddingLeft: "7px",
-                    backgroundColor: "white",
-                  }}
-                />
-                <Input
-                  type="input"
-                  placeholder="search"
-                  onChange={this.onBasedUserInput}
-                />
-              </BorderSearch>
-              <BsFilterRight style={{ color: "#171F46", padding: "5px" }} />
-              <p>Sort</p>
-            </SearchWithSort>
-          </TableTopSection>
-          <ReactTable resourceItems={resourceItems} />
-        </Main>
-      </>
-    );
-  }
-}
+            <Spacing>
+              <CardName>{resource.title}</CardName>
+              <Gray>{resource.id}</Gray>
+              <a
+                href={resource.link}
+                target="_blank"
+                style={{ color: "#0B69FF", fontWeight: "bold" }}
+                rel="noreferrer"
+              >
+                {resource.link}
+              </a>
+            </Spacing>
+          </Border>
+          <Gray>{resource.description}</Gray>
+        </div>
+        <UpdateBtn>Update</UpdateBtn>
+
+        <TableTopSection>
+          <h1>Items</h1>
+          <SearchWithSort>
+            <BorderSearch>
+              <FaSistrix
+                style={{
+                  height: "20px",
+                  width: "20px",
+                  paddingLeft: "7px",
+                  backgroundColor: "white",
+                }}
+              />
+              <Input
+                type="input"
+                placeholder="search"
+                onChange={(event) => setInput(event.target.value)}
+              />
+            </BorderSearch>
+          </SearchWithSort>
+          <div>{<SortMenu />}</div>
+        </TableTopSection>
+
+        <ReactTable resourceItems={resourceItem} />
+      </Main>
+    </>
+  );
+};
+
 export default ResourceDetailComponent;

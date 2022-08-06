@@ -1,74 +1,112 @@
-import { Component } from "react";
-import React from "react";
+import React, { useState } from "react";
 import ResourceCardComponent from "../ResourceCardComponent";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData, filterData } from "../Redux/Actions/HomePageAction";
 import { FaSistrix } from "react-icons/fa";
+import { ThreeDots } from "react-loader-spinner";
+import { resourceDetails } from "../Redux/Actions/ResourcePageAction";
 
 import {
   Main,
-  CustomButton,
+  CustomButton1,
+  CustomButton2,
+  CustomButton3,
   DivForButtons,
   Border,
   BorderSearch,
   Input,
+  UnOrderedList,
 } from "./styledComponent";
 
-const tabsList = [
-  { tabId: "resources" },
-  { tabId: "requests" },
-  { tabId: "user" },
-];
+const Home = () => {
+  const [resourceData, setResourceData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [tags, setTags] = useState("");
+  const dispatch = useDispatch();
+  const allResources = useSelector((store) => store.allResources.resources);
 
-class Home extends Component {
-  state = {
-    active_tabId: tabsList[0].tabId,
-  };
+  useEffect(() => {
+    getResources();
+  }, []);
 
-  getResources = async () => {
+  const getResources = async () => {
     const apiUrl =
       " https://media-content.ccbp.in/website/react-assignment/resources.json";
     const response = await fetch(apiUrl);
-    if (response.ok) {
-      const fetchedData = await response.json();
-      const updatedResourceData = {
-        title: fetchedData.title,
-        iconUrl: fetchedData.icon_url,
-        link: fetchedData.link,
-        description: fetchedData.description,
-        category: fetchedData.category,
-        tag: fetchedData.tag,
-        id: fetchedData.id,
-      };
-      this.setState({});
-    }
+    const result = await response.json();
+    setResourceData([...result]);
+    dispatch(fetchData(result));
   };
 
-  componentDidMount() {
-    this.getResources();
-  }
-  render() {
-    return (
-      <Main>
-        <DivForButtons>
-          <Border>
-            <CustomButton selected>Resource</CustomButton>
-            <CustomButton>Request</CustomButton>
-            <CustomButton>users</CustomButton>
-          </Border>
-        </DivForButtons>
-        <BorderSearch>
-          <FaSistrix
-            style={{
-              height: "20px",
-              width: "20px",
-              paddingLeft: "7px",
-              backgroundColor: "white",
-            }}
-          />
-          <Input type="input" placeholder="search" />
-        </BorderSearch>
-        <ResourceCardComponent />
-      </Main>
+  const onToggleTags = (tag) => {
+    setTags(tag);
+    dispatch(filterData({ data: [...resourceData], tag: tag }));
+  };
+
+  const getDetailsPage = async (id) => {
+    const data = await fetch(
+      `https://media-content.ccbp.in/website/react-assignment/resource/${id}.json`
     );
-  }
-}
+    const response = await data.json();
+    dispatch(resourceDetails(response));
+  };
+
+  return allResources.length < 1 ? (
+    <ThreeDots color="#00BFFF" height={80} width={80} />
+  ) : (
+    <Main>
+      <DivForButtons>
+        <Border>
+          <CustomButton1
+            condition={tags === ""}
+            onClick={() => onToggleTags("")}
+          >
+            Resource
+          </CustomButton1>
+          <CustomButton2
+            condition={tags === "request"}
+            onClick={() => onToggleTags("request")}
+          >
+            Request
+          </CustomButton2>
+          <CustomButton3
+            condition={tags === "user"}
+            onClick={() => onToggleTags("user")}
+          >
+            users
+          </CustomButton3>
+        </Border>
+      </DivForButtons>
+      <BorderSearch>
+        <FaSistrix
+          style={{
+            height: "20px",
+            width: "20px",
+            paddingLeft: "7px",
+            backgroundColor: "white",
+          }}
+        />
+        <Input
+          type="input"
+          placeholder="search"
+          onChange={(event) => setSearch(event.target.value)}
+        />
+      </BorderSearch>
+      <UnOrderedList>
+        {allResources
+          .filter((eachCard) =>
+            eachCard.title.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((eachFilteredCard) => (
+            <ResourceCardComponent
+              eachFilteredCard={eachFilteredCard}
+              key={eachFilteredCard.id}
+              getDetailsPage={getDetailsPage}
+            />
+          ))}
+      </UnOrderedList>
+    </Main>
+  );
+};
 export default Home;
