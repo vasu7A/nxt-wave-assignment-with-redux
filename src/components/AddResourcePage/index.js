@@ -21,7 +21,7 @@ const AddResourceItem = () => {
     resource: "",
     description: "",
   });
-  const handleChange = (event) => {
+  const saveData = (event) => {
     setForm({
       ...form,
       [event.target.name]: event.target.value,
@@ -29,32 +29,41 @@ const AddResourceItem = () => {
   };
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (form.title.length < 5) {
-      toast.error("Title must be at least 5 characters long", {
-        position: "bottom-right",
-      });
-    } else if (validator.isURL(form.link) === false) {
-      toast.error("Link must be valid URL", { position: "bottom-right" });
-    } else if (form.resource.length < 3) {
-      toast.error("Resource must be at least 3 characters", {
-        position: "bottom-right",
-      });
-    } else if (form.description.length < 20) {
-      toast.error("Description must be at least 30 characters", {
-        position: "bottom-right",
-      });
-    } else {
-      fetch(
-        " https://media-content.ccbp.in/website/react-assignment/add_resource.json",
+    if (form.title.length < 3) {
+      toast.error(
+        "Title must be at least 3 characters,please enter valid data",
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+          position: "bottom-right",
         }
       );
+    } else if (validator.isURL(form.link) === false) {
+      toast.error("Link must be valid", { position: "bottom-right" });
+    } else if (form.resource.length < 3) {
+      toast.error(
+        "Resource must be at least 3 character,please enter valid data",
+        {
+          position: "bottom-right",
+        }
+      );
+    } else if (form.description.length < 20) {
+      toast.error(
+        "Description must be at least 20 characters,please enter valid data",
+        {
+          position: "bottom-right",
+        }
+      );
+    } else {
+      const url =
+        " https://media-content.ccbp.in/website/react-assignment/add_resource.json";
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      };
+      fetch(url, options);
       toast.success("Added Successfully", {
         position: "bottom-center",
-        autoClose: 5000,
+        autoClose: 7000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -79,12 +88,12 @@ const AddResourceItem = () => {
               <p>Resources</p>
             </ReturnHome>
           </Link>
-          <h2>Item Details</h2>
+          <h1>Item Details</h1>
           <form onSubmit={onSubmit}>
             <p className="box-description">ITEM NAME</p>
             <Input
               value={form.title}
-              onChange={handleChange}
+              onChange={saveData}
               type="text"
               name="title"
               required
@@ -92,7 +101,7 @@ const AddResourceItem = () => {
             <p className="box-description">LINK</p>
             <Input
               value={form.link}
-              onChange={handleChange}
+              onChange={saveData}
               type="text"
               name="link"
               required
@@ -100,7 +109,7 @@ const AddResourceItem = () => {
             <p className="box-description">RESOURCE NAME</p>
             <Input
               value={form.resource}
-              onChange={handleChange}
+              onChange={saveData}
               type="text"
               name="resource"
               required
@@ -108,7 +117,7 @@ const AddResourceItem = () => {
             <p className="box-description">DESCRIPTION</p>
             <textarea
               value={form.description}
-              onChange={handleChange}
+              onChange={saveData}
               name="description"
               cols="42"
               rows="5"

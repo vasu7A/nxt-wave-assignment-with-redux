@@ -30,7 +30,16 @@ const ResourceDetailComponent = () => {
   const [input, setInput] = useState("");
 
   return resource.id === undefined ? (
-    <ThreeDots color="#00BFFF" height={80} width={80} />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <ThreeDots color="#00BFFF" height={80} width={80} />
+    </div>
   ) : (
     <>
       <Main>

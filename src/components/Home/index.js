@@ -53,7 +53,16 @@ const Home = () => {
   };
 
   return allResources.length < 1 ? (
-    <ThreeDots color="#00BFFF" height={80} width={80} />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <ThreeDots color="#00BFFF" height={80} width={80} />
+    </div>
   ) : (
     <Main>
       <DivForButtons>
