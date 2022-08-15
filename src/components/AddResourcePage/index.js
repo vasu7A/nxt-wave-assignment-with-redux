@@ -80,8 +80,8 @@ const AddResourceItem = () => {
   };
   return (
     <div>
-      <MainDiv className="main-div">
-        <FormContainer className="left">
+      <MainDiv>
+        <FormContainer>
           <Link to="/">
             <ReturnHome>
               <BsChevronLeft />
@@ -90,7 +90,7 @@ const AddResourceItem = () => {
           </Link>
           <h1>Item Details</h1>
           <form onSubmit={onSubmit}>
-            <p className="box-description">ITEM NAME</p>
+            <p>ITEM NAME</p>
             <Input
               value={form.title}
               onChange={saveData}
@@ -98,7 +98,7 @@ const AddResourceItem = () => {
               name="title"
               required
             />
-            <p className="box-description">LINK</p>
+            <p>LINK</p>
             <Input
               value={form.link}
               onChange={saveData}
@@ -106,7 +106,7 @@ const AddResourceItem = () => {
               name="link"
               required
             />
-            <p className="box-description">RESOURCE NAME</p>
+            <p>RESOURCE NAME</p>
             <Input
               value={form.resource}
               onChange={saveData}
@@ -114,7 +114,7 @@ const AddResourceItem = () => {
               name="resource"
               required
             />
-            <p className="box-description">DESCRIPTION</p>
+            <p>DESCRIPTION</p>
             <textarea
               value={form.description}
               onChange={saveData}
